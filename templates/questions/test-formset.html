@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Test Maker - Create Test{% endblock %}
+
+{% block content %}
+  <h1 class="text-4xl font-bold mb-8">Create Test</h1>
+  <form class="space-y-4" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div>
+          <label for="{{ form.name.id_for_label }}" class="block mb-2">{{ form.name.label }}:</label>
+          {{ form.name }}
+      </div>
+      <div>
+          <label for="{{ form.lesson.id_for_label }}" class="block mb-2">{{ form.lesson.label }}:</label>
+          {{ form.lesson }}
+      </div>
+      <div class="border-t border-gray-300 pt-4">
+          <h2 class="text-2xl font-bold mb-4">Questions</h2>
+          <div class="space-y-4" id="questions-container">
+              {% for question_form in question_formset %}
+              <div class="question-formset border border-gray-300 rounded p-4">
+                  <h3 class="text-xl font-semibold mb-2">Question {{ forloop.counter }}</h3>
+                  <div class="mb-2">
+                      <label for="{{ question_form.text.id_for_label }}" class="block mb-2">{{ question_form.text.label }}:</label>
+                      {{ question_form.text }}
+                  </div>
+                  <div class="space-y-2">
+                      {% for answer_form in question_form.answers %}
+                      <div>
+                          <label for="{{ answer_form.text.id_for_label }}" class="block mb-2">{{ answer_form.text.label }}:</label>
+                          {{ answer_form.text }}
+                          <label class="inline-flex items-center mt-1">
+                              {{ answer_form.is_correct }}
+                              <span class="ml-2">Correct Answer</span>
+                          </label>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+          <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" id="add-question">Add Question</button>
+      </div>
+      <div>
+          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Test</button>
+      </div>
+  </form>
+{% endblock %}

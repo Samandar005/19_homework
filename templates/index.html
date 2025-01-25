@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Test Maker - Home {% endblock %}
+
+
+{% block content %}
+<h1 class="text-4xl font-bold mb-8">Welcome to Test Maker</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Create Tests</h2>
+        <p class="mb-4">Create and manage your tests with our easy-to-use interface.</p>
+        <a href="{% url 'questions:list' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">View Tests</a>
+    </div>
+    <div class="bg-green-100 p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Manage Lessons</h2>
+        <p class="mb-4">Organize your lessons and associate them with tests.</p>
+        <a href="{% url 'lessons:list' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">View Lessons</a>
+    </div>
+</div>
+{% endblock %}

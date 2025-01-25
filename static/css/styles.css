@@ -1,0 +1,69 @@
+ body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+        }
+        nav {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #e2e8f0;
+        }
+        main {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .bg-blue-100, .bg-green-100 {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .bg-blue-100:hover, .bg-green-100:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .bg-blue-600, .bg-green-600 {
+            transition: background-color 0.3s ease;
+        }
+        .bg-blue-600:hover {
+            background-color: #2563eb;
+        }
+        .bg-green-600:hover {
+            background-color: #16a34a;
+        }
+        footer {
+            background: linear-gradient(to right, #2563eb, #16a34a);
+            color: white;
+        }
+        input[type="text"], textarea {
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+         tr {
+            transition: background-color 0.3s ease;
+        }
+        tr:hover {
+            background-color: #f0f9ff;
+        }
+        .text-blue-600, .text-red-600 {
+            transition: color 0.3s ease;
+        }
+        .text-blue-600:hover {
+            color: #2563eb;
+        }
+        .text-red-600:hover {
+            color: #dc2626;
+        }
+         ul li {
+            transition: transform 0.3s ease;
+        }
+        ul li:hover {
+            transform: translateX(5px);
+        }
