@@ -9,6 +9,9 @@ class Test(models.Model):
     def get_delete_url(self):
         return reverse('questions:delete', args=[self.pk])
 
+    def get_update_url(self):
+        return reverse('questions:update', args=[self.pk])
+
 class Question(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='questions')
     text = models.TextField()

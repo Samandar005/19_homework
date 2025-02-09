@@ -6,27 +6,31 @@
 {% block content %}
  <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Lesson List</h1>
         <a href="{% url 'lessons:create' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block">Create New Lesson</a>
-        <table class="w-full border-collapse bg-white rounded-lg overflow-hidden">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 p-2">Lesson Name</th>
-                    <th class="border border-gray-300 p-2">Description</th>
-                    <th class="border border-gray-300 p-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for lesson in lessons %}
-                <tr>
-                    <td class="border border-gray-300 p-2">{{ lesson.name }}</td>
-                    <td class="border border-gray-300 p-2">{{ lesson.description }}</td>
-                    <td class="border border-gray-300 p-2">
-                        <a href="{{ lesson.get_detail_url }}" class="text-blue-600 hover:underline mr-2">View</a>
-                        <a href="{{ lesson.get_update_url }}" class="text-blue-600 hover:underline mr-2">Edit</a>
-                        <a href="{{ lesson.get_delete_url }}" class="text-red-600 hover:underline">Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% if lessons %}
+            <table class="w-full border-collapse bg-white rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 p-2">Lesson Name</th>
+                        <th class="border border-gray-300 p-2">Description</th>
+                        <th class="border border-gray-300 p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for lesson in lessons %}
+                    <tr>
+                        <td class="border border-gray-300 p-2">{{ lesson.name }}</td>
+                        <td class="border border-gray-300 p-2">{{ lesson.description }}</td>
+                        <td class="border border-gray-300 p-2">
+                            <a href="{{ lesson.get_detail_url }}" class="text-blue-600 hover:underline mr-2">View</a>
+                            <a href="{{ lesson.get_update_url }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                            <a href="{{ lesson.get_delete_url }}" class="text-red-600 hover:underline">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3>No added Lesson</h3>
+        {% endif %}
 {% endblock %}
 

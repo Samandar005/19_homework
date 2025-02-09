@@ -1,48 +1,118 @@
 {% extends 'base.html' %}
 
-{% block title %} Test Maker - Create Test{% endblock %}
+{% block title %} Test yaratish {% endblock %}
 
 {% block content %}
-  <h1 class="text-4xl font-bold mb-8">Create Test</h1>
-  <form class="space-y-4" method="post" enctype="multipart/form-data">
+  <h1 class="text-4xl font-bold mb-8">Test yaratish</h1>
+  <form class="space-y-4" method="post">
       {% csrf_token %}
-      <div>
-          <label for="{{ form.name.id_for_label }}" class="block mb-2">{{ form.name.label }}:</label>
-          {{ form.name }}
+
+      {% if form.non_field_errors %}
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          {{ form.non_field_errors }}
       </div>
-      <div>
-          <label for="{{ form.lesson.id_for_label }}" class="block mb-2">{{ form.lesson.label }}:</label>
-          {{ form.lesson }}
+      {% endif %}
+
+      {% for field in form %}
+      <div class="mb-4">
+          <label for="{{ field.id_for_label }}" class="block mb-2">{{ field.label }}:</label>
+          {{ field }}
+          {% if field.errors %}
+          <div class="text-red-500 text-sm mt-1">
+              {% for error in field.errors %}
+                  {{ error }}
+              {% endfor %}
+          </div>
+          {% endif %}
       </div>
-      <div class="border-t border-gray-300 pt-4">
-          <h2 class="text-2xl font-bold mb-4">Questions</h2>
-          <div class="space-y-4" id="questions-container">
-              {% for question_form in question_formset %}
-              <div class="question-formset border border-gray-300 rounded p-4">
-                  <h3 class="text-xl font-semibold mb-2">Question {{ forloop.counter }}</h3>
-                  <div class="mb-2">
-                      <label for="{{ question_form.text.id_for_label }}" class="block mb-2">{{ question_form.text.label }}:</label>
-                      {{ question_form.text }}
+      {% endfor %}
+
+      <h2 class="text-2xl font-bold mb-4">Savollar</h2>
+      {{ question_formset.management_form }}
+      <div id="questions-container">
+          {% for question_form in question_formset %}
+              <div class="border border-gray-300 rounded p-4 mb-4">
+                  {% if question_form.non_field_errors %}
+                  <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                      {{ question_form.non_field_errors }}
                   </div>
+                  {% endif %}
+
+                  <h3 class="text-xl font-semibold mb-2">Savol {{ forloop.counter }}</h3>
+
+                  {% for hidden in question_form.hidden_fields %}
+                      {{ hidden }}
+                  {% endfor %}
+
+                  {% for field in question_form.visible_fields %}
+                      {% if field.name != 'DELETE' %}
+                          <div class="mb-2">
+                              <label class="block mb-2">{{ field.label }}:</label>
+                              {{ field }}
+                              {% if field.errors %}
+                              <div class="text-red-500 text-sm mt-1">
+                                  {% for error in field.errors %}
+                                      {{ error }}
+                                  {% endfor %}
+                              </div>
+                              {% endif %}
+                          </div>
+                      {% endif %}
+                  {% endfor %}
+
+                  <div class="mt-2">
+                      <label class="inline-flex items-center">
+                          {{ question_form.DELETE }}
+                          <span class="ml-2">Savolni o'chirish</span>
+                      </label>
+                  </div>
+
+                  <h4 class="text-lg font-semibold mt-4 mb-2">Javoblar</h4>
+                  {{ question_form.nested.answers.management_form }}
                   <div class="space-y-2">
-                      {% for answer_form in question_form.answers %}
-                      <div>
-                          <label for="{{ answer_form.text.id_for_label }}" class="block mb-2">{{ answer_form.text.label }}:</label>
-                          {{ answer_form.text }}
-                          <label class="inline-flex items-center mt-1">
-                              {{ answer_form.is_correct }}
-                              <span class="ml-2">Correct Answer</span>
-                          </label>
-                      </div>
+                      {% for answer_form in question_form.nested.answers %}
+                          <div class="border border-gray-200 p-4 rounded">
+                              {% if answer_form.non_field_errors %}
+                              <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                                  {{ answer_form.non_field_errors }}
+                              </div>
+                              {% endif %}
+
+                              {% for field in answer_form.visible_fields %}
+                                  {% if field.name != 'DELETE' %}
+                                      <div class="mb-2">
+                                          <label class="block mb-2">{{ field.label }}:</label>
+                                          {{ field }}
+                                          {% if field.errors %}
+                                          <div class="text-red-500 text-sm mt-1">
+                                              {% for error in field.errors %}
+                                                  {{ error }}
+                                              {% endfor %}
+                                          </div>
+                                          {% endif %}
+                                      </div>
+                                  {% endif %}
+                              {% endfor %}
+
+                              <div class="mt-2">
+                                  <label class="inline-flex items-center">
+                                      {{ answer_form.DELETE }}
+                                      <span class="ml-2">Javobni o'chirish</span>
+                                  </label>
+                              </div>
+                          </div>
                       {% endfor %}
                   </div>
               </div>
-              {% endfor %}
-          </div>
-          <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" id="add-question">Add Question</button>
+          {% endfor %}
       </div>
-      <div>
-          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Test</button>
-      </div>
+
+      <button type="button" id="add-question" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">
+          Savol qo'shish
+      </button>
+
+      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-4">
+          {% if form.instance.pk %}Yangilash{% else %}Yaratish{% endif %}
+      </button>
   </form>
 {% endblock %}
